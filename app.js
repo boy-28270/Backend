@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var users = require('./routes/users');
 
 var app = express();
-app.use('/', users);
+app.use('/api', users);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
