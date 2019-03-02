@@ -2,9 +2,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var users = require('./routes/users');
+var pos = require('./routes/pos');
 
 var app = express();
 app.use('/api', users);
+app.use('/api/pos', pos);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
