@@ -39,10 +39,9 @@ const createStock = (req, res) => {
      };
     Stock.create(createStock, function(err, stock){
         if(err){
-            console.log(err);
-            next(err);
+            throw new Error(err);
         }else{
-            res.json({status: 200});
+            res.status(200)
        }
     });
 };
