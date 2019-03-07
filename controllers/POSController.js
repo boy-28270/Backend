@@ -27,20 +27,21 @@ mongoose.connect(config.dbPos, options)
 
 const createStock = (req, res) => {
     const createStock = { 
-        code : req.query.code,
-        name : req.query.name,
-        color : req.query.color,
-        size : req.query.size,
-        image : req.query.image,
-        item : Number(req.query.price),
-        price : Number(req.query.price),
-        capitalPrice : Number(req.query.capitalPrice),
+        code : req.body.code,
+        name : req.body.name,
+        color : req.body.color,
+        size : req.body.size,
+        image : req.body.image,
+        item : Number(req.body.price),
+        price : Number(req.body.price),
+        capitalPrice : Number(req.body.capitalPrice),
      };
     Stock.create(createStock, function(err, stock){
         if(err){
-            //  console.log(err);
+            res.json({status: 400});
+             console.log(err);
         }else{
-             res.json(stock);
+            res.json({status: 200});
        }
     });
 };
