@@ -41,7 +41,10 @@ const createStock = (req, res) => {
         if(err){
             res.status(500).send({ error: err })
         }else{
-            res.status(200).send("OK")
+            res.status(200).send({
+                status: 1,
+                id: stock._id
+            })
        }
     });
 };
