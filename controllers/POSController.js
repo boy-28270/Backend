@@ -39,7 +39,7 @@ const createStock = (req, res) => {
      };
     Stock.create(createStock, function(err, stock){
         if(err){
-            res.status(500).send({ error: error })
+            res.status(500).send({ error: err })
         }else{
             res.status(200).send("OK")
        }
