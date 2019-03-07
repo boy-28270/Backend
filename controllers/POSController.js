@@ -26,6 +26,7 @@ mongoose.connect(config.dbPos, options)
 });
 
 const createStock = (req, res) => {
+    console.log("Request Body : ",req.body)
     const createStock = { 
         code : req.body.code,
         name : req.body.name,
@@ -38,8 +39,8 @@ const createStock = (req, res) => {
      };
     Stock.create(createStock, function(err, stock){
         if(err){
-            res.json({status: 400});
-             console.log(err);
+            console.log(err);
+            next(err);
         }else{
             res.json({status: 200});
        }
