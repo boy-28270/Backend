@@ -157,8 +157,47 @@ const inquiryStock = (req, res) => {
     });
 };
 
+const inquiryListStock = (req, res) => {
+     Stock.find({}, function(err, stock){
+        if (stock) {
+            var hashMap = new Map();
+            stock.forEach(element => {
+                var keyFull = element.name+"_"+element.color;
+                if(hashMap.has(keyFull)) {
+                    var obj = hashMap.get(keyFull);
+                    var key = element.size;
+                    obj[key] = element.item;
+                    hashMap.set(keyFull, obj)
+                } else {
+                    var key = element.size;
+                    var obj = {};
+                    obj["image"] = element.image
+                    obj[key] = element.item;
+                    hashMap.set(keyFull, obj)
+                }
+            });
+
+            var obj = {};
+            hashMap.forEach(function(value, key) {
+                obj[key] = value;
+            });
+
+            res.status(200).send({ 
+                status: 1,
+                data: obj
+            }); 
+        } else {
+            res.status(200).send({ 
+                status: 0,
+                errorMsg: "ไม่พบข้อมูลในระบบ" 
+            });      
+       }
+    });
+};
+
 module.exports = {
     createStock,
     updateStock,
-    inquiryStock
+    inquiryStock,
+    inquiryListStock
 };
