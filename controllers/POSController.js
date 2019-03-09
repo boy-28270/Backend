@@ -43,7 +43,7 @@ const createStock = (req, res) => {
             console.log(err)
         } else {
             if (stock) {
-                res.status(500).send({ 
+                res.status(200).send({ 
                     status: 0,
                     errorMsg: "มีอยู่แล้วในระบบ" 
                 })
