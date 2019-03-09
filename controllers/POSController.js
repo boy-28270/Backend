@@ -37,14 +37,28 @@ const createStock = (req, res) => {
         price : Number(req.body.price),
         capitalPrice : Number(req.body.capitalPrice),
      };
-    Stock.create(createStock, function(err, stock){
-        if(err){
-            res.status(500).send({ error: err })
-        }else{
-            res.status(200).send({
-                status: 1,
-                id: stock._id
-            })
+     const queryStock = { code : req.body.code };
+     Stock.findOne(queryStock, function(err, stock){
+        if (err) {
+            console.log(err)
+        } else {
+            if (stock) {
+                res.status(500).send({ 
+                    status: 0,
+                    errorMsg: "มีอยู่แล้วในระบบ" 
+                })
+            } else {
+                Stock.create(createStock, function(err, stock){
+                    if (err) {
+                        res.status(500).send({ error: err })
+                    } else {
+                        res.status(200).send({
+                            status: 1,
+                            id: stock._id
+                        })
+                   }
+                });            
+            }
        }
     });
 };
