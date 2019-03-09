@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var dateNow
 var StockSchema = mongoose.Schema({
     code : {type : String,required: true},
     name : {type : String,required: false},

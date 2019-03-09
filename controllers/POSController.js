@@ -2,6 +2,7 @@ var express = require('express');
 var config = require('../config/db');
 var mongoose = require('mongoose');
 var Stock = require('../models/StockModule');
+var History = require('../models/HistoryModule');
 var moment = require('moment');
 
 const options = {
@@ -44,8 +45,10 @@ const createStock = (req, res) => {
      const queryStock = { code : req.body.code };
      Stock.findOne(queryStock, function(err, stock){
         if (err) {
-            console.log(err);
-        } else {
+            res.status(200).send({ 
+                status: 0,
+                errorMsg: "เกิดข้อผิดพลาดในระบบ" 
+            });          } else {
             if (stock) {
                 res.status(200).send({ 
                     status: 0,
@@ -89,11 +92,31 @@ const updateStock = (req, res) => {
                             errorMsg: "ไม่พบข้อมูลในระบบ" 
                         });   
                     } else {
-                        res.status(200).send({
-                            status: 1,
-                            msg: "อัพเดทข้อมูลเรียบร้อย",
-                            data: updateStock
-                        });
+                        const createHistory = { 
+                            code : req.body.code,
+                            name : place.name,
+                            color : place.color,
+                            size : place.size,
+                            image : place.image,
+                            item : req.body.item,
+                            price : req.body.price,
+                            capitalPrice :req.body.capitalPrice,
+                            created : moment()
+                         };
+                        History.create(createHistory, function(err, stock){
+                            if (err) {
+                                res.status(200).send({ 
+                                    status: 0,
+                                    errorMsg: "เกิดข้อผิดพลาดในระบบ" 
+                                });  
+                            } else {
+                                res.status(200).send({
+                                    status: 1,
+                                    msg: "อัพเดทข้อมูลเรียบร้อย",
+                                    data: updateStock
+                                });
+                           }
+                        });      
                    }
                 }); 
             } else {
