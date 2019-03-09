@@ -81,7 +81,7 @@ const updateStock = (req, res) => {
                 const updateStock = { 
                     code : req.body.code,
                     item : Number(stock.item) + Number(req.body.item),
-                    price : Number(stock.price),
+                    price : Number(req.body.price),
                     capitalPrice : Number(stock.capitalPrice) + Number(req.body.capitalPrice),
                     updated : moment()
                 };
