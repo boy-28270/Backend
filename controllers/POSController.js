@@ -2,6 +2,7 @@ var express = require('express');
 var config = require('../config/db');
 var mongoose = require('mongoose');
 var Stock = require('../models/StockModule');
+var moment = require('moment');
 
 const options = {
     useNewUrlParser: true,
@@ -27,6 +28,7 @@ mongoose.connect(config.dbPos, options)
 
 const createStock = (req, res) => {
     console.log("Request Body : ",req.body)
+    const date = moment()
     const createStock = { 
         code : req.body.code,
         name : req.body.name,
@@ -36,26 +38,28 @@ const createStock = (req, res) => {
         item : Number(req.body.price),
         price : Number(req.body.price),
         capitalPrice : Number(req.body.capitalPrice),
+        created : date,
+        updated : date
      };
      const queryStock = { code : req.body.code };
      Stock.findOne(queryStock, function(err, stock){
         if (err) {
-            console.log(err)
+            console.log(err);
         } else {
             if (stock) {
                 res.status(200).send({ 
                     status: 0,
                     errorMsg: "มีอยู่แล้วในระบบ" 
-                })
+                });
             } else {
                 Stock.create(createStock, function(err, stock){
                     if (err) {
-                        res.status(500).send({ error: err })
+                        res.status(500).send({ error: err });
                     } else {
                         res.status(200).send({
                             status: 1,
                             id: stock._id
-                        })
+                        });
                    }
                 });            
             }
@@ -63,6 +67,75 @@ const createStock = (req, res) => {
     });
 };
 
+const updateStock = (req, res) => {
+    console.log("Request Body : ",req.body)
+    const queryStock = { code : req.body.code };
+     Stock.findOne(queryStock, function(err, stock){
+        if (err) {
+            console.log(err);
+        } else {
+            if (stock) {
+                const updateStock = { 
+                    code : req.body.code,
+                    item : Number(stock.item) + Number(req.body.item),
+                    price : Number(stock.price),
+                    capitalPrice : Number(stock.capitalPrice) + Number(req.body.capitalPrice),
+                    updated : moment()
+                };
+                Stock.findOneAndUpdate({code:updateStock.code}, updateStock, function (err, place) {
+                    if (err) {
+                        res.status(200).send({ 
+                            status: 0,
+                            errorMsg: "ไม่พบข้อมูลในระบบ" 
+                        });   
+                    } else {
+                        res.status(200).send({
+                            status: 1,
+                            msg: "อัพเดทข้อมูลเรียบร้อย",
+                            data: updateStock
+                        });
+                   }
+                }); 
+            } else {
+                res.status(200).send({ 
+                    status: 0,
+                    errorMsg: "ไม่พบข้อมูลในระบบ" 
+                });           
+            }
+       }
+    });
+};
+
+const inquiryStock = (req, res) => {
+    console.log("Request Body : ",req.body)
+    const queryStock = { code : req.body.code };
+     Stock.findOne(queryStock, function(err, stock){
+        if (stock) {
+            var data = {
+                code : stock.code,
+                name : stock.name,
+                color : stock.color,
+                size : stock.size,
+                image : stock.image,
+                item : stock.price,
+                price : stock.price,
+                capitalPrice : stock.capitalPrice
+            }
+            res.status(200).send({ 
+                status: 1,
+                data: data
+            }); 
+        } else {
+            res.status(200).send({ 
+                status: 0,
+                errorMsg: "ไม่พบข้อมูลในระบบ" 
+            });      
+       }
+    });
+};
+
 module.exports = {
-    createStock
+    createStock,
+    updateStock,
+    inquiryStock
 };
