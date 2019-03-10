@@ -174,6 +174,10 @@ const inquiryListStock = (req, res) => {
                     obj["name"] = element.name
                     obj["color"] = element.color
                     obj["image"] = element.image
+                    obj["S"] = 0
+                    obj["M"] = 0
+                    obj["L"] = 0
+                    obj["XL"] = 0
                     obj[key] = element.item;
                     hashMap.set(keyFull, obj)
                 }
