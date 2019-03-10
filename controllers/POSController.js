@@ -177,14 +177,14 @@ const inquiryListStock = (req, res) => {
                 }
             });
 
-            var obj = {};
+            var array = [];
             hashMap.forEach(function(value, key) {
-                obj[key] = value;
+                array.push(value);
             });
 
             res.status(200).send({ 
                 status: 1,
-                data: obj
+                data: array
             }); 
         } else {
             res.status(200).send({ 
