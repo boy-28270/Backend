@@ -35,7 +35,7 @@ const createStock = (req, res) => {
         name : req.body.name,
         color : req.body.color,
         size : req.body.size,
-        image : req.body.image,
+        image : "/pos/images/"+req.body.code+".JPG",
         item : Number(req.body.price),
         price : Number(req.body.price),
         capitalPrice : Number(req.body.capitalPrice),
