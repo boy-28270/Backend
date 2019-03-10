@@ -140,7 +140,7 @@ const inquiryStock = (req, res) => {
                 color : stock.color,
                 size : stock.size,
                 image : stock.image,
-                item : stock.price,
+                item : stock.item,
                 price : stock.price,
                 capitalPrice : stock.capitalPrice
             }
