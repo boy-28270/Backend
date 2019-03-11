@@ -75,7 +75,10 @@ const updateStock = (req, res) => {
     const queryStock = { code : req.body.code };
      Stock.findOne(queryStock, function(err, stock){
         if (err) {
-            console.log(err);
+            res.status(200).send({ 
+                status: 0,
+                errorMsg: "เกิดข้อผิดพลาดในระบบ" 
+            });  
         } else {
             if (stock) {
                 const updateStock = { 
@@ -201,9 +204,69 @@ const inquiryListStock = (req, res) => {
     });
 };
 
+const buyItem = (req, res) => {
+    console.log("Request Body : ",req.body)
+    var items = req.body.items;
+    var promises = new Promise(function(resolve, reject) {
+        items.forEach(item => {
+            const queryStock = { code : item.code };
+            Stock.findOne(queryStock, function(err, stock){
+                if (err) {
+                    reject({ 
+                        status: 0,
+                        errorMsg: "เกิดข้อผิดพลาดในระบบ" 
+                    })
+                } else {
+                    if(stock) {
+                        const updateStock = { 
+                            code : stock.code,
+                            item : Number(stock.item) - Number(item.item),
+                            price : Number(stock.price),
+                            capitalPrice : Number(stock.capitalPrice) - ( ( Number(stock.capitalPrice) / Number(stock.item) ) * Number(item.item) ),
+                            updated : moment()
+                        };
+                        if (updateStock.item < 0 || updateStock.capitalPrice < 0) {
+                            reject({ 
+                                status: 0,
+                                errorMsg: "สิ้นค้าหมด" 
+                            }) 
+                        } else {
+                            Stock.findOneAndUpdate({code:stock.code}, updateStock, function (err, place) {
+                                if (err) {
+                                    reject({ 
+                                        status: 0,
+                                        errorMsg: "เกิดข้อผิดพลาดในระบบ" 
+                                    })
+                                } else {
+                                    resolve({ 
+                                        status: 1,
+                                        msg: "อัพเดทข้อมูลเรียบร้อย"
+                                    });
+                                }
+                            }); 
+                        }
+                    } else {
+                        reject({ 
+                            status: 0,
+                            errorMsg: "ไม่พบข้อมูลในระบบ" 
+                        })
+                    }
+                }
+            });
+        });
+    });
+    
+    promises.then((value) => {
+        res.status(200).send(value);
+    }).catch((value) => {
+        res.status(200).send(value);
+    })
+}
+
 module.exports = {
     createStock,
     updateStock,
     inquiryStock,
-    inquiryListStock
+    inquiryListStock,
+    buyItem
 };
