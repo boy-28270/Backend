@@ -6,4 +6,5 @@ router.post('/updateStock', controller.updateStock);
 router.post('/inquiryStock', controller.inquiryStock);
 router.post('/inquiryListStock', controller.inquiryListStock);
 router.post('/buyItem', controller.buyItem);
+router.post('/inquiryTransaction', controller.inquiryTransaction);
 module.exports = router;

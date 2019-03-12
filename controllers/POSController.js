@@ -277,10 +277,27 @@ const buyItem = (req, res) => {
     })
 }
 
+const inquiryTransaction = (req, res) => {
+    var q = Transaction.find({}).sort({'created': -1}).limit(20);
+    q.exec(function(err, transaction) {
+        if (transaction) {
+            res.status(200).send({ 
+                status: 1,
+                data: transaction
+            }); 
+        } else {
+            res.status(200).send({ 
+                status: 0,
+                errorMsg: "ไม่พบข้อมูลในระบบ" 
+            });      
+       }    });
+};
+
 module.exports = {
     createStock,
     updateStock,
     inquiryStock,
     inquiryListStock,
+    inquiryTransaction,
     buyItem
 };
