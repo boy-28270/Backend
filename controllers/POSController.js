@@ -3,7 +3,9 @@ var config = require('../config/db');
 var mongoose = require('mongoose');
 var Stock = require('../models/StockModule');
 var History = require('../models/HistoryModule');
+var Transaction = require('../models/TransactionModule');
 var moment = require('moment');
+var uuid = require('uuid/v4');
 
 const options = {
     useNewUrlParser: true,
@@ -257,6 +259,18 @@ const buyItem = (req, res) => {
     });
     
     promises.then((value) => {
+        var createTransaction = {
+            refCode : uuid(),
+            totalItem : Number(req.body.totalItem),
+            totalPrice : Number(req.body.totalPrice),
+            discount : Number(req.body.discount),
+            summary : Number(req.body.summary),
+            receive : Number(req.body.receive),
+            change : Number(req.body.change),
+            items : req.body.items,
+            created : moment()
+        }
+        Transaction.create(createTransaction);  
         res.status(200).send(value);
     }).catch((value) => {
         res.status(200).send(value);
