@@ -34,7 +34,7 @@ const createStock = (req, res) => {
     const date = moment()
     const createStock = { 
         code : req.body.code,
-        name : req.body.name,
+        name : req.body.name.toUpperCase().split(' ').join(''),
         color : req.body.color,
         size : req.body.size,
         image : "/pos/images/"+req.body.code+".JPG",
