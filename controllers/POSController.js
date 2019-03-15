@@ -166,15 +166,37 @@ const inquiryListStock = (req, res) => {
      Stock.find({}, function(err, stock){
         if (stock) {
             var hashMap = new Map();
+            var totalSizeS = 0;
+            var totalSizeM = 0;
+            var totalSizeL = 0;
+            var totalSizeXL = 0;
             stock.forEach(element => {
                 var keyFull = element.name+"_"+element.color;
                 if(hashMap.has(keyFull)) {
                     var obj = hashMap.get(keyFull);
                     var key = element.size;
+                    if(key === "S") {
+                        totalSizeS += Number(element.item);
+                    } else if(key === "M") {
+                        totalSizeM += Number(element.item);
+                    } else  if(key === "L") {
+                        totalSizeL += Number(element.item);
+                    } else if(key === "XL") {
+                        totalSizeXL += Number(element.item);
+                    }
                     obj[key] = element.item;
                     hashMap.set(keyFull, obj)
                 } else {
                     var key = element.size;
+                    if(key === "S") {
+                        totalSizeS += Number(element.item);
+                    } else if(key === "M") {
+                        totalSizeM += Number(element.item);
+                    } else  if(key === "L") {
+                        totalSizeL += Number(element.item);
+                    } else if(key === "XL") {
+                        totalSizeXL += Number(element.item);
+                    }   
                     var obj = {};
                     obj["name"] = element.name
                     obj["color"] = element.color
@@ -195,6 +217,11 @@ const inquiryListStock = (req, res) => {
 
             res.status(200).send({ 
                 status: 1,
+                totalItem: totalSizeS + totalSizeM + totalSizeL + totalSizeXL,
+                totalSizeS: totalSizeS,
+                totalSizeM: totalSizeM,
+                totalSizeL: totalSizeL,
+                totalSizeXL: totalSizeXL,
                 data: array
             }); 
         } else {
