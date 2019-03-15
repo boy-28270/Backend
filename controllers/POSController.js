@@ -106,8 +106,8 @@ const updateStock = (req, res) => {
                             item : req.body.item,
                             price : req.body.price,
                             capitalPrice :req.body.capitalPrice,
-                            created : moment()
-                         };
+                            created : moment().locale('th')
+                        };
                         History.create(createHistory, function(err, stock){
                             if (err) {
                                 res.status(200).send({ 
@@ -295,7 +295,7 @@ const buyItem = (req, res) => {
             receive : Number(req.body.receive),
             change : Number(req.body.change),
             items : req.body.items,
-            created : moment()
+            created : moment().locale('th')
         }
         Transaction.create(createTransaction);  
         res.status(200).send(value);
