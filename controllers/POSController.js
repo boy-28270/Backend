@@ -305,7 +305,9 @@ const buyItem = (req, res) => {
 }
 
 const inquiryTransaction = (req, res) => {
-    var q = Transaction.find({}).sort({'created': -1}).limit(20);
+    var now = new Date();
+    var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var q = Transaction.find({created:{$gte: startOfToday}}).sort({'created': -1}).limit(20);
     q.exec(function(err, transaction) {
         if (transaction) {
             res.status(200).send({ 
