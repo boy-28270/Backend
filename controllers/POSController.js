@@ -6,6 +6,7 @@ var History = require('../models/HistoryModule');
 var Transaction = require('../models/TransactionModule');
 var moment = require('moment');
 var uuid = require('uuid/v4');
+var multer = require('multer');
 
 const options = {
     useNewUrlParser: true,
@@ -319,8 +320,37 @@ const inquiryTransaction = (req, res) => {
                 status: 0,
                 errorMsg: "ไม่พบข้อมูลในระบบ" 
             });      
-       }    });
+       }    
+    });
 };
+
+const uploadImage = (req, res) => {
+    var code = req.query.code;
+    var Storage = multer.diskStorage({
+        destination: function(req, file, callback) {
+            callback(null, "/var/www/html/pos/images");
+        },
+        filename: function(req, file, callback) {
+            callback(null, code);
+        }
+    });
+    var upload = multer({
+        storage: Storage
+    }).array("imgUploader", 3); //Field name and max count
+    upload(req, res, function(err) {
+        if (err) {
+            res.status(200).send({ 
+                status: 0,
+                errorMsg: "อัพโหลดรูปภาพไม่สำเร็จ" 
+            });    
+        } else {
+            res.status(200).send({ 
+                status: 1,
+                msg: "อัพโหลดรูปภาพสำเร็จ" 
+            });
+        }
+    });
+}
 
 module.exports = {
     createStock,
@@ -328,5 +358,6 @@ module.exports = {
     inquiryStock,
     inquiryListStock,
     inquiryTransaction,
-    buyItem
+    buyItem,
+    uploadImage
 };
