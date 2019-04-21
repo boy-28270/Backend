@@ -312,7 +312,7 @@ const inquiryTransaction = (req, res) => {
     var now = new Date();
     // var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getDate() - 1;
     var yesterday = moment().subtract(1, 'days');
-    var q = Transaction.find({created:{$gte: yesterday}}).sort({'created': -1});
+    var q = Transaction.find({created:{$gte: yesterday}}).sort({'created': -1}).limit(5);
     q.exec(function(err, transaction) {
         if (transaction) {
             res.status(200).send({ 
