@@ -321,7 +321,8 @@ const inquiryTransaction = (req, res) => {
                 status: 0,
                 errorMsg: "ไม่พบข้อมูลในระบบ" 
             });      
-       }    
+       }
+       console.log("Response Body : ",res);
     });
 };
 
