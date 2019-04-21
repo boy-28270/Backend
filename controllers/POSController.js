@@ -164,6 +164,7 @@ const inquiryStock = (req, res) => {
 };
 
 const inquiryListStock = (req, res) => {
+    console.log("Request Body : ",req.body)
      Stock.find({}, function(err, stock){
         if (stock) {
             var hashMap = new Map();
@@ -303,9 +304,11 @@ const buyItem = (req, res) => {
     }).catch((value) => {
         res.status(200).send(value);
     })
+    console.log("Response Body : ",res);
 }
 
 const inquiryTransaction = (req, res) => {
+    console.log("Request Body : ",req.body)
     var now = new Date();
     // var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getDate() - 1;
     var yesterday = moment().subtract(1, 'days');
