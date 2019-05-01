@@ -238,6 +238,8 @@ const inquiryListStock = (req, res) => {
 const buyItem = (req, res) => {
     console.log("Request Body : ",req.body)
     var items = req.body.items;
+    var profit = 0;
+    var capitalPriceTotal = 0;
     var promises = new Promise(function(resolve, reject) {
         items.forEach(item => {
             const queryStock = { code : item.code };
@@ -256,6 +258,7 @@ const buyItem = (req, res) => {
                             capitalPrice : Number(stock.capitalPrice) - ( ( Number(stock.capitalPrice) / Number(stock.item) ) * Number(item.item) ),
                             updated : moment()
                         };
+                        capitalPriceTotal += (Number(stock.price) - (Number(stock.capitalPrice) / Number(stock.item)));
                         if (updateStock.item < 0 || updateStock.capitalPrice < 0) {
                             reject({ 
                                 status: 0,
@@ -288,6 +291,7 @@ const buyItem = (req, res) => {
     });
     
     promises.then((value) => {
+        profit = capitalPriceTotal - Number(req.body.discount)
         var createTransaction = {
             refCode : uuid(),
             totalItem : Number(req.body.totalItem),
@@ -297,6 +301,7 @@ const buyItem = (req, res) => {
             receive : Number(req.body.receive),
             change : Number(req.body.change),
             items : req.body.items,
+            profit : profit,
             created : moment().locale('th')
         }
         Transaction.create(createTransaction);  
