@@ -8,6 +8,7 @@ var HistorySchema = mongoose.Schema({
     receive : {type : Number,required: true},
     change : {type : Number,required: true},
     items : {type : Array,required: true},
+    profit : {type : Number,required: true},
     created : {type : Date,required: true}
 },{ collection : 'transaction'}
 );
