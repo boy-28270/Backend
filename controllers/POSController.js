@@ -314,10 +314,10 @@ const buyItem = (req, res) => {
 
 const inquiryTransaction = (req, res) => {
     console.log("Request Body : ",req.body)
-    var yesterday = new Date(new Date().setDate(new Date().getDate()-1));
-    var time = new Date("January 1, 1995 12:00:00");
-
-    yesterday.setTime(time.getTime());
+    var now = new Date();
+    // var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getDate() - 1;
+    var yesterday = moment().subtract(1, 'days');
+    yesterday.set({h: 12, m: 00});
     var q = Transaction.find({created:{$gte: yesterday}}).sort({'created': -1});
     q.exec(function(err, transaction) {
         if (transaction) {
@@ -330,8 +330,8 @@ const inquiryTransaction = (req, res) => {
                 status: 0,
                 errorMsg: "ไม่พบข้อมูลในระบบ" 
             });      
-        }
-        console.log("Response Body : ",res);
+       }
+       console.log("Response Body : ",res);
     });
 };
 
