@@ -315,10 +315,17 @@ const buyItem = (req, res) => {
 const inquiryTransaction = (req, res) => {
     console.log("Request Body : ",req.body)
     var now = new Date();
-    // var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getDate() - 1;
-    var yesterday = moment().subtract(1, 'days');
-    yesterday.set({h: 12, m: 00});
-    var q = Transaction.find({created:{$gte: yesterday}}).sort({'created': -1});
+    var date = now;
+    if (now.getHours <= 12) {
+        var yesterday = moment().subtract(1, 'days');
+        yesterday.set({h: 12, m: 00});
+        date = yesterday;
+    } else {
+        var totay = moment();
+        totay.set({h: 12, m: 00});
+        date = totay;
+    }
+    var q = Transaction.find({created:{$gte: date}}).sort({'created': -1});
     q.exec(function(err, transaction) {
         if (transaction) {
             res.status(200).send({ 
