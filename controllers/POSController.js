@@ -316,7 +316,7 @@ const inquiryTransaction = (req, res) => {
     console.log("Request Body : ",req.body)
     var now = new Date();
     var date = now;
-    if (now.getHours <= 12) {
+    if (now.getHours() <= 12) {
         var yesterday = moment().subtract(1, 'days');
         yesterday.set({h: 12, m: 00});
         date = yesterday;
