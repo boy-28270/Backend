@@ -314,9 +314,9 @@ const buyItem = (req, res) => {
 
 const inquiryTransaction = (req, res) => {
     console.log("Request Body : ",req.body)
+    var date = new Date();
     // var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getDate() - 1;
-    if(now.getHours <= 12){
-        var date = new Date();
+    if(date.getHours <= 12){
         var time = new Date("July 21, 1983 12:00:00");
         date.setDate(date.getDate() - 1);
         date.setTime(time.getTime);
@@ -336,7 +336,6 @@ const inquiryTransaction = (req, res) => {
            console.log("Response Body : ",res);
         });
      }else{
-        var date = new Date();
         var time = new Date("July 21, 1983 12:00:00");
         date.setTime(time.getTime);
         var q = Transaction.find({created:{$gte: date}}).sort({'created': -1});
