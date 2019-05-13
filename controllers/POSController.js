@@ -258,7 +258,7 @@ const buyItem = (req, res) => {
                             capitalPrice : Number(stock.capitalPrice) - ( ( Number(stock.capitalPrice) / Number(stock.item) ) * Number(item.item) ),
                             updated : moment()
                         };
-                        capitalPriceTotal += (Number(stock.price) - (Number(stock.capitalPrice) / Number(stock.item)));
+                        capitalPriceTotal += (Number(stock.price) - (Number(stock.capitalPrice) / Number(stock.item))) * Number(item.item);
                         if (updateStock.item < 0 || updateStock.capitalPrice < 0) {
                             reject({ 
                                 status: 0,
