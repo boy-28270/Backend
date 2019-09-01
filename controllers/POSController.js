@@ -163,6 +163,23 @@ const inquiryStock = (req, res) => {
     });
 };
 
+const inquiryList = (req, res) => {
+    console.log("Request Body : ",req.body)
+     Stock.find({}, function(err, stock){
+        if (stock) {
+            res.status(200).send({ 
+                status: 1,
+                data: data
+            }); 
+        } else {
+            res.status(200).send({ 
+                status: 0,
+                errorMsg: "ไม่พบข้อมูลในระบบ" 
+            });      
+       }
+    });
+};
+
 const inquiryListStock = (req, res) => {
     console.log("Request Body : ",req.body)
      Stock.find({}, function(err, stock){
@@ -374,6 +391,7 @@ module.exports = {
     createStock,
     updateStock,
     inquiryStock,
+    inquiryList,
     inquiryListStock,
     inquiryTransaction,
     buyItem,

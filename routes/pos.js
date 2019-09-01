@@ -4,6 +4,7 @@ var controller = require('../controllers/POSController');
 router.post('/createStock', controller.createStock);
 router.post('/updateStock', controller.updateStock);
 router.post('/inquiryStock', controller.inquiryStock);
+router.post('/inquiryList', controller.inquiryList);
 router.post('/inquiryListStock', controller.inquiryListStock);
 router.post('/buyItem', controller.buyItem);
 router.post('/inquiryTransaction', controller.inquiryTransaction);
