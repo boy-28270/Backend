@@ -139,15 +139,15 @@ const editStock = (req, res) => {
     console.log("Request Body : ",req.body)
     const editStock = { 
         code : req.body.code,
-        name : place.name,
-        color : place.color,
-        size : place.size,
+        name : req.body.name,
+        color : req.body.color,
+        size : req.body.size,
         item : Number(req.body.item),
         price : Number(req.body.price),
         capitalPrice : Number(req.body.capitalPrice),
         updated : moment().locale('th')
     };
-    Stock.findOneAndUpdate({code:editStock.code}, editStock, function (err, place) {
+    Stock.findOneAndUpdate({code:editStock.code}, editStock, function (err) {
         if (err) {
             res.status(200).send({ 
                 status: 0,
