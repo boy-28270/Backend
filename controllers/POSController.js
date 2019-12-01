@@ -135,6 +135,34 @@ const updateStock = (req, res) => {
     });
 };
 
+const editStock = (req, res) => {
+    console.log("Request Body : ",req.body)
+    const editStock = { 
+        code : req.body.code,
+        name : place.name,
+        color : place.color,
+        size : place.size,
+        item : Number(req.body.item),
+        price : Number(req.body.price),
+        capitalPrice : Number(req.body.capitalPrice),
+        updated : moment().locale('th')
+    };
+    Stock.findOneAndUpdate({code:editStock.code}, editStock, function (err, place) {
+        if (err) {
+            res.status(200).send({ 
+                status: 0,
+                errorMsg: "ไม่พบข้อมูลในระบบ" 
+            });   
+        } else {
+            res.status(200).send({
+                status: 1,
+                msg: "อัพเดทข้อมูลเรียบร้อย",
+                data: editStock
+            });    
+       }
+    }); 
+};
+
 const inquiryStock = (req, res) => {
     console.log("Request Body : ",req.body)
     const queryStock = { code : req.body.code };
@@ -395,5 +423,6 @@ module.exports = {
     inquiryListStock,
     inquiryTransaction,
     buyItem,
-    uploadImage
+    uploadImage,
+    editStock
 };

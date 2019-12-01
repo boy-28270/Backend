@@ -9,4 +9,5 @@ router.post('/inquiryListStock', controller.inquiryListStock);
 router.post('/buyItem', controller.buyItem);
 router.post('/inquiryTransaction', controller.inquiryTransaction);
 router.post('/uploadImage', controller.uploadImage);
+router.post('/editStock', controller.editStock);
 module.exports = router;
