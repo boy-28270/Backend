@@ -364,17 +364,17 @@ const buyItem = (req, res) => {
     }).catch((value) => {
         res.status(200).send(value);
     })
+    console.log("Response Body : ",res);
 }
 
 const inquiryTransaction = (req, res) => {
-    console.log("Request Body : ",req.body)
-    var now = moment();
+    var now = new Date();
     if (req.body.date) {
-        now = moment(req.body.date + " 19:00:00", "YYYY-MM-DD HH:mm:ss").toDate();
+        now = moment(req.body.date + " 13:00:00", "YYYY-MM-DD HH:mm:ss").toDate();
     }
-    var date = moment(now);
+    var date = moment();
     if (now.getHours() <= 12) {
-        var yesterday = now.subtract(1, 'days');
+        var yesterday = moment(now).subtract(1, 'days');
         yesterday.set({h: 12, m: 00});
         date = yesterday;
     } else {
