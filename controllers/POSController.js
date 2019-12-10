@@ -382,7 +382,8 @@ const inquiryTransaction = (req, res) => {
         totay.set({h: 12, m: 00});
         date = totay;
     }
-    var q = Transaction.find({created:{$gte: date}}).sort({'created': -1});
+    var max = moment(date).add(1, 'days');
+    var q = Transaction.find({created:{$gte: date, $lt: max}}).sort({'created': -1});
     q.exec(function(err, transaction) {
         if (transaction) {
             res.status(200).send({ 
