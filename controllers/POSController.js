@@ -193,26 +193,29 @@ const inquiryStock = (req, res) => {
 
 const inquiryList = (req, res) => {
     console.log("Request Body : ",req.body)
-     Stock.find({ item: {$gt: 0} }, {
-            _id: 0,
-            code: 1, 
-            name: 1,
-            color: 1,
-            size: 1,
-            image: 1
-        }, function(err, stock){
-            if (stock) {
-                res.status(200).send({ 
-                    status: 1,
-                    data: stock
-                }); 
-            } else {
-                res.status(200).send({ 
-                    status: 0,
-                    errorMsg: "ไม่พบข้อมูลในระบบ" 
-                });      
-        }
-    });
+    var q = Stock.find({ item: {$gt: 0} }, {
+        _id: 0,
+        code: 1, 
+        name: 1,
+        color: 1,
+        size: 1,
+        image: 1
+    }).sort({
+        name: 1
+    })
+    q.exec(function(err, stock) {
+        if (stock) {
+            res.status(200).send({ 
+                status: 1,
+                data: stock
+            }); 
+        } else {
+            res.status(200).send({ 
+                status: 0,
+                errorMsg: "ไม่พบข้อมูลในระบบ" 
+            }); 
+        }     
+    })
 };
 
 const inquiryListStock = (req, res) => {
