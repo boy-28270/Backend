@@ -364,19 +364,21 @@ const buyItem = (req, res) => {
     }).catch((value) => {
         res.status(200).send(value);
     })
-    console.log("Response Body : ",res);
 }
 
 const inquiryTransaction = (req, res) => {
     console.log("Request Body : ",req.body)
-    var now = new Date();
-    var date = now;
+    var now = moment();
+    if (req.body.date) {
+        now = moment(req.body.date + " 19:00:00", "YYYY-MM-DD HH:mm:ss").toDate();
+    }
+    var date = moment(now);
     if (now.getHours() <= 12) {
-        var yesterday = moment().subtract(1, 'days');
+        var yesterday = now.subtract(1, 'days');
         yesterday.set({h: 12, m: 00});
         date = yesterday;
     } else {
-        var totay = moment();
+        var totay = moment(now);
         totay.set({h: 12, m: 00});
         date = totay;
     }
@@ -393,7 +395,6 @@ const inquiryTransaction = (req, res) => {
                 errorMsg: "ไม่พบข้อมูลในระบบ" 
             });      
        }
-       console.log("Response Body : ",res);
     });
 };
 
